@@ -24,9 +24,3 @@ defaults:
       path: ""
     values:
       layout: default
-
-
-collections:
-  pages:
-    output: true
-    permalink: /:name/

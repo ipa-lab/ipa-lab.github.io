@@ -19,7 +19,7 @@ publications = []
 for pid in dblp_ids:
     url = f"https://dblp.org/pid/{pid}.xml"
     print(f"Fetching DBLP data for {pid}...")
-    resp = requests.get(url)
+    resp = requests.get(url, timeout=10)
     if resp.status_code != 200:
         continue
 

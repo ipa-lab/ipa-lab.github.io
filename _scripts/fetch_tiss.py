@@ -23,7 +23,7 @@ team_data = {}
 for tiss_id in tiss_ids:
     url = f"https://tiss.tuwien.ac.at/api/person/v23/id/{tiss_id}"
     print(f"Fetching TISS ID {tiss_id}...")
-    resp = requests.get(url)
+    resp = requests.get(url, timeout=10)
     if resp.status_code != 200:
         print(f"Warning: Could not fetch TISS ID {tiss_id}")
         continue

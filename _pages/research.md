@@ -4,4 +4,4 @@ layout: default
 excerpt: "Our Research Topics."
 ---
 
-Sorry, all our resarch is todo.
+Sorry, all our research is todo.

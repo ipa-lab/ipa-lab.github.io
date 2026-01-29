@@ -18,7 +18,7 @@ excerpt: "Meet our Team."
     <div class="row g-0 align-items-center">
       {% if person.picture %}
       <div class="col-auto">
-        <img src="{{ person.picture }}" class="img-fluid rounded-start" style="width: 120px; height: auto;" alt="{{ person.name }}">
+        <img src="{{ person.picture }}" class="img-fluid rounded-start" style="width: 120px; height: auto;" alt="Portrait of {{ person.name }}">
       </div>
       {% endif %}
       <div class="col">

@@ -1,0 +1,41 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center" href="{{ site.url }}{{ site.baseurl }}/">
+        <span>IPA-Lab @</span>
+        <img src="{{ site.baseurl }}/assets/images/TU_Signet_RGB.svg" alt="TU Wien" height="40" class="ms-2">
+    </a>
+
+    <button class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbar-collapse-1"
+            aria-controls="navbar-collapse-1"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbar-collapse-1">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link {% if page.url == '/' %}active{% endif %}" href="{{ site.url }}{{ site.baseurl }}/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link  {% if page.url contains '/team' %}active{% endif %}" href="{{ site.url }}{{ site.baseurl }}/team">Team</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if page.url contains '/vacancies' %}active{% endif %}" href="{{ site.url }}{{ site.baseurl }}/vacancies">Vacancies</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if page.url contains '/publications' %}active{% endif %}" href="{{ site.url }}{{ site.baseurl }}/publications">Publications</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if page.url contains '/research' %}active{% endif %}" href="{{ site.url }}{{ site.baseurl }}/research">Research</a>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="{{ site.url }}{{ site.baseurl }}/pictures">(Pics)</a>
+        </li> -->
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -21,7 +21,7 @@ OUTPUT_FILE = "_data/team/tiss_generated.yml"
 team_data = {}
 
 for tiss_id in tiss_ids:
-    url = f"https://tiss.tuwien.ac.at/api/person/v23/id/{tiss_id}"
+    url = f"https://tiss.tuwien.ac.at/api/person/v23/id/{tiss_id}?locale=en"
     print(f"Fetching TISS ID {tiss_id}...")
     resp = requests.get(url, timeout=10)
     if resp.status_code != 200:

@@ -28,7 +28,7 @@ excerpt: "Meet our Team."
           <p class="card-text">
             {{ person.bio }}
             {% if person.room_code %}
-            <a href="https://maps.tuwien.ac.at/?q={{ person.room_code }}">Office: {{ person.room_code }}</a>
+            Office: <a href="https://maps.tuwien.ac.at/?q={{ person.room_code }}">{{ person.room_code }}</a>
             {% endif %}
           </p>
           {% if person.email %}

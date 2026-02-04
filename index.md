@@ -17,14 +17,9 @@ We can broadly view the work we do as part of two categories:
 
 ### Student projects
 
-We have multiple project openings in the areas of interactive programming, machine learning for software engineering, and program synthesis.
-
-Please reach out to  
-[Jürgen Cito](mailto:juergen.cito@tuwien.ac.at) or  
-[Michael Schröder](mailto:michael.schroeder@tuwien.ac.at)
-
-Have a look at some potential areas and topics here:  
-[IPA Student Project Slides](https://docs.google.com/presentation/d/1HhjsZSCjLjruQMBr701scHMYj-3YIdcoAUagHm_4Buw/edit?usp=sharing)
+We offer thesis opportunities (bachelor's and master's) and projects (Project in Computer Science) in the broader areas of software engineering for TU Wien students.
+Please read our [IPA Thesis Guidelines](https://bit.ly/ipa-thesis) and if you are interested in working with us, please reach out to  
+[Jürgen Cito](mailto:juergen.cito@tuwien.ac.at)
 
 ---
 

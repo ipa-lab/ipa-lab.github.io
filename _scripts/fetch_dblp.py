@@ -47,6 +47,33 @@ def get_publication_priority(pub):
     else:
         return (3, year_score)
 
+def deduplicate_publications(publications):
+    """
+    Deduplicate publications by normalized title, keeping the highest priority version.
+    Uses a single-loop approach with a dictionary.
+    """
+    best_pubs = {}
+    
+    for pub in publications:
+        normalized = normalize_title(pub["title"])
+        
+        if normalized not in best_pubs:
+            best_pubs[normalized] = pub
+        else:
+            # Compare with existing publication and keep the better one
+            existing = best_pubs[normalized]
+            if get_publication_priority(pub) < get_publication_priority(existing):
+                print(f"  Deduplicating '{pub['title']}':")
+                print(f"    Keeping: {pub['type']} in {pub['venue']} ({pub['year']})")
+                print(f"    Removing: {existing['type']} in {existing['venue']} ({existing['year']})")
+                best_pubs[normalized] = pub
+            else:
+                print(f"  Deduplicating '{existing['title']}':")
+                print(f"    Keeping: {existing['type']} in {existing['venue']} ({existing['year']})")
+                print(f"    Removing: {pub['type']} in {pub['venue']} ({pub['year']})")
+    
+    return list(best_pubs.values())
+
 publications = []
 
 for pid in dblp_ids:
@@ -66,13 +93,7 @@ for pid in dblp_ids:
 
         # Extract DOI or other direct links from ee elements
         ee_elements = entry.findall("ee")
-        url = f"https://dblp.org/rec/{key}"  # default to dblp
-        if ee_elements:
-            # Prefer DOI links, then any other link
-            for ee in ee_elements:
-                if ee.text:
-                    url = ee.text
-                    break
+        url = next((ee.text for ee in ee_elements if ee.text), f"https://dblp.org/rec/{key}")
 
         pub = {
             "id": key,
@@ -86,30 +107,8 @@ for pid in dblp_ids:
 
         publications.append(pub)
 
-# Deduplicate by normalized title, keeping the highest priority version
-title_groups = defaultdict(list)
-for pub in publications:
-    normalized = normalize_title(pub["title"])
-    title_groups[normalized].append(pub)
-
-deduplicated = []
-for normalized_title, pubs in title_groups.items():
-    if len(pubs) == 1:
-        deduplicated.append(pubs[0])
-    else:
-        # Sort by priority and keep the best one
-        pubs.sort(key=get_publication_priority)
-        best = pubs[0]
-        deduplicated.append(best)
-        
-        # Log duplicates being removed
-        if len(pubs) > 1:
-            print(f"  Deduplicating '{best['title']}':")
-            print(f"    Keeping: {best['type']} in {best['venue']} ({best['year']})")
-            for dup in pubs[1:]:
-                print(f"    Removing: {dup['type']} in {dup['venue']} ({dup['year']})")
-
-publications = deduplicated
+# Deduplicate publications
+publications = deduplicate_publications(publications)
 
 # Sort: newest first, then title
 publications.sort(

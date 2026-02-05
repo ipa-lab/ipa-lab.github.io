@@ -3,6 +3,7 @@ import requests
 import xml.etree.ElementTree as ET
 import yaml
 import os
+from collections import defaultdict
 
 dblp_ids = [
     "150/6416",  # Jürgen Cito
@@ -10,9 +11,68 @@ dblp_ids = [
 
 OUTPUT_FILE = "_data/publications/dblp_generated.yml"
 
+# Publication type constants
+TYPE_INPROCEEDINGS = "inproceedings"
+TYPE_ARTICLE = "article"
+VENUE_CORR = "CoRR"
+
 def text(elem, tag):
     t = elem.find(tag)
     return t.text.strip() if t is not None and t.text else ""
+
+def normalize_title(title):
+    """Normalize title for comparison by removing trailing punctuation and converting to lowercase."""
+    return title.rstrip('.').lower()
+
+def get_publication_priority(pub):
+    """
+    Return a priority score for deduplication.
+    Lower scores are preferred (kept over higher scores).
+    
+    Priority order:
+    1. Published conference/journal papers (inproceedings, article in non-CoRR venues)
+    2. CoRR preprints (article in CoRR)
+    3. Other types
+    
+    Within each category, prefer newer publications.
+    """
+    year_score = -(pub["year"] or 0)
+    
+    if pub["type"] == TYPE_INPROCEEDINGS:
+        return (0, year_score)
+    elif pub["type"] == TYPE_ARTICLE and pub["venue"] != VENUE_CORR:
+        return (1, year_score)
+    elif pub["type"] == TYPE_ARTICLE and pub["venue"] == VENUE_CORR:
+        return (2, year_score)
+    else:
+        return (3, year_score)
+
+def deduplicate_publications(publications):
+    """
+    Deduplicate publications by normalized title, keeping the highest priority version.
+    Uses a single-loop approach with a dictionary.
+    """
+    best_pubs = {}
+    
+    for pub in publications:
+        normalized = normalize_title(pub["title"])
+        
+        if normalized not in best_pubs:
+            best_pubs[normalized] = pub
+        else:
+            # Compare with existing publication and keep the better one
+            existing = best_pubs[normalized]
+            if get_publication_priority(pub) < get_publication_priority(existing):
+                print(f"  Deduplicating '{pub['title']}':")
+                print(f"    Keeping: {pub['type']} in {pub['venue']} ({pub['year']})")
+                print(f"    Removing: {existing['type']} in {existing['venue']} ({existing['year']})")
+                best_pubs[normalized] = pub
+            else:
+                print(f"  Deduplicating '{existing['title']}':")
+                print(f"    Keeping: {existing['type']} in {existing['venue']} ({existing['year']})")
+                print(f"    Removing: {pub['type']} in {pub['venue']} ({pub['year']})")
+    
+    return list(best_pubs.values())
 
 publications = []
 
@@ -31,6 +91,10 @@ for pid in dblp_ids:
         if not key:
             continue
 
+        # Extract DOI or other direct links from ee elements
+        ee_elements = entry.findall("ee")
+        url = next((ee.text for ee in ee_elements if ee.text), f"https://dblp.org/rec/{key}")
+
         pub = {
             "id": key,
             "title": text(entry, "title"),
@@ -38,10 +102,13 @@ for pid in dblp_ids:
             "venue": text(entry, "journal") or text(entry, "booktitle"),
             "type": entry.tag,
             "authors": [a.text for a in entry.findall("author") if a.text],
-            "url": f"https://dblp.org/rec/{key}"
+            "url": url
         }
 
         publications.append(pub)
+
+# Deduplicate publications
+publications = deduplicate_publications(publications)
 
 # Sort: newest first, then title
 publications.sort(

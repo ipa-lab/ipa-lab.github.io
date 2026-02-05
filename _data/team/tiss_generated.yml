@@ -26,7 +26,7 @@
   office: Favoritenstraße 9, 1040 Wien, AT
   phone: +43 1 58801 194306
   picture: https://tiss.tuwien.ac.at/illustration/anzeigen/70a7e3e05399.jpeg
-  role: Projektassistent (FWF)
+  role: Project Assistant (FWF)
   room_code: HB0218
   unit: Research Unit of Software Engineering
 306229:
@@ -36,18 +36,18 @@
   office: Favoritenstraße 9, 1040 Wien, AT
   phone: +43 1 58801 194115
   picture: https://tiss.tuwien.ac.at/illustration/anzeigen/43b06ca7076e.png
-  role: Assistent
+  role: Assistant
   room_code: HB0214
   unit: Research Unit of Software Engineering
 340744:
   email: jakob.hoffmann@tuwien.ac.at
   function_group_tiss_id: 1004
   name: Jakob Valentin Hoffmann
-  office: ''
+  office: Favoritenstraße 9, 1040 Wien, AT
   phone: null
   picture: https://tiss.tuwien.ac.at/illustration/anzeigen/a83176787125.jpeg
-  role: Assistent
-  room_code: null
+  role: Assistant
+  room_code: HD0203
   unit: Research Unit of Software Engineering
 48622:
   email: andreas.happe@tuwien.ac.at
@@ -56,7 +56,7 @@
   office: ''
   phone: null
   picture: https://tiss.tuwien.ac.at/illustration/anzeigen/22acd3e371fd.png
-  role: Weiterer Mitarbeiter
+  role: External employee
   room_code: null
   unit: Research Unit of Software Engineering
 309852:
@@ -66,6 +66,6 @@
   office: ''
   phone: null
   picture: https://tiss.tuwien.ac.at/illustration/anzeigen/9aafb420e122.jpeg
-  role: Weiterer Mitarbeiter
+  role: External employee
   room_code: null
   unit: Research Unit of Software Engineering

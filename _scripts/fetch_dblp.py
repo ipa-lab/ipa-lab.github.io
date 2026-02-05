@@ -3,12 +3,18 @@ import requests
 import xml.etree.ElementTree as ET
 import yaml
 import os
+from collections import defaultdict
 
 dblp_ids = [
     "150/6416",  # Jürgen Cito
 ]
 
 OUTPUT_FILE = "_data/publications/dblp_generated.yml"
+
+# Publication type constants
+TYPE_INPROCEEDINGS = "inproceedings"
+TYPE_ARTICLE = "article"
+VENUE_CORR = "CoRR"
 
 def text(elem, tag):
     t = elem.find(tag)
@@ -30,14 +36,16 @@ def get_publication_priority(pub):
     
     Within each category, prefer newer publications.
     """
-    if pub["type"] == "inproceedings":
-        return (0, -(pub["year"] or 0))
-    elif pub["type"] == "article" and pub["venue"] != "CoRR":
-        return (1, -(pub["year"] or 0))
-    elif pub["type"] == "article" and pub["venue"] == "CoRR":
-        return (2, -(pub["year"] or 0))
+    year_score = -(pub["year"] or 0)
+    
+    if pub["type"] == TYPE_INPROCEEDINGS:
+        return (0, year_score)
+    elif pub["type"] == TYPE_ARTICLE and pub["venue"] != VENUE_CORR:
+        return (1, year_score)
+    elif pub["type"] == TYPE_ARTICLE and pub["venue"] == VENUE_CORR:
+        return (2, year_score)
     else:
-        return (3, -(pub["year"] or 0))
+        return (3, year_score)
 
 publications = []
 
@@ -79,7 +87,6 @@ for pid in dblp_ids:
         publications.append(pub)
 
 # Deduplicate by normalized title, keeping the highest priority version
-from collections import defaultdict
 title_groups = defaultdict(list)
 for pub in publications:
     normalized = normalize_title(pub["title"])

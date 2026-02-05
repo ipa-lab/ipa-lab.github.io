@@ -14,6 +14,31 @@ def text(elem, tag):
     t = elem.find(tag)
     return t.text.strip() if t is not None and t.text else ""
 
+def normalize_title(title):
+    """Normalize title for comparison by removing trailing punctuation and converting to lowercase."""
+    return title.rstrip('.').lower()
+
+def get_publication_priority(pub):
+    """
+    Return a priority score for deduplication.
+    Lower scores are preferred (kept over higher scores).
+    
+    Priority order:
+    1. Published conference/journal papers (inproceedings, article in non-CoRR venues)
+    2. CoRR preprints (article in CoRR)
+    3. Other types
+    
+    Within each category, prefer newer publications.
+    """
+    if pub["type"] == "inproceedings":
+        return (0, -(pub["year"] or 0))
+    elif pub["type"] == "article" and pub["venue"] != "CoRR":
+        return (1, -(pub["year"] or 0))
+    elif pub["type"] == "article" and pub["venue"] == "CoRR":
+        return (2, -(pub["year"] or 0))
+    else:
+        return (3, -(pub["year"] or 0))
+
 publications = []
 
 for pid in dblp_ids:
@@ -31,6 +56,16 @@ for pid in dblp_ids:
         if not key:
             continue
 
+        # Extract DOI or other direct links from ee elements
+        ee_elements = entry.findall("ee")
+        url = f"https://dblp.org/rec/{key}"  # default to dblp
+        if ee_elements:
+            # Prefer DOI links, then any other link
+            for ee in ee_elements:
+                if ee.text:
+                    url = ee.text
+                    break
+
         pub = {
             "id": key,
             "title": text(entry, "title"),
@@ -38,10 +73,36 @@ for pid in dblp_ids:
             "venue": text(entry, "journal") or text(entry, "booktitle"),
             "type": entry.tag,
             "authors": [a.text for a in entry.findall("author") if a.text],
-            "url": f"https://dblp.org/rec/{key}"
+            "url": url
         }
 
         publications.append(pub)
+
+# Deduplicate by normalized title, keeping the highest priority version
+from collections import defaultdict
+title_groups = defaultdict(list)
+for pub in publications:
+    normalized = normalize_title(pub["title"])
+    title_groups[normalized].append(pub)
+
+deduplicated = []
+for normalized_title, pubs in title_groups.items():
+    if len(pubs) == 1:
+        deduplicated.append(pubs[0])
+    else:
+        # Sort by priority and keep the best one
+        pubs.sort(key=get_publication_priority)
+        best = pubs[0]
+        deduplicated.append(best)
+        
+        # Log duplicates being removed
+        if len(pubs) > 1:
+            print(f"  Deduplicating '{best['title']}':")
+            print(f"    Keeping: {best['type']} in {best['venue']} ({best['year']})")
+            for dup in pubs[1:]:
+                print(f"    Removing: {dup['type']} in {dup['venue']} ({dup['year']})")
+
+publications = deduplicated
 
 # Sort: newest first, then title
 publications.sort(

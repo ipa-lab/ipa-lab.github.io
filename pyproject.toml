@@ -1,0 +1,9 @@
+[project]
+name = "ipa-lab-scripts"
+version = "0.1.0"
+description = "Utility scripts for the IPA Lab site"
+requires-python = ">=3.9"
+dependencies = [
+  "pyyaml==6.0.3",
+  "requests==2.32.5",
+]

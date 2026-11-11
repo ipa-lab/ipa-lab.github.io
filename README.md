@@ -1,111 +1,67 @@
-# IPA-Lab Website
+# IPA Lab Website
 
-This is the official website for the Interactive Programming & Analysis Lab at TU Wien, built with [Jekyll](https://jekyllrb.com/).
+The website of the Interactive Programming & Analysis Lab at TU Wien, served at <https://ipa-lab.github.io>.
 
-## About Jekyll
+It is a small static site: `build.py` loads YAML from `_data/`, renders the Jinja2 templates in `templates/`, and writes plain HTML to `_site/`. There is no JS or CSS framework; styles live in one hand-written `static/site.css`.
 
-This website is built using Jekyll, a static site generator that transforms plain text into static websites and blogs. Jekyll is particularly well-suited for GitHub Pages hosting.
+To open or close thesis supervision or advertise a position, edit `_data/site.yml` and rebuild. The home page and the Join page read from it.
 
-For more information about Jekyll, see the [GitHub Pages Jekyll Tutorial](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll).
+## Install
 
-## Building Locally
+You need [uv](https://docs.astral.sh/uv/). It installs Python and the dependencies (Jinja2, PyYAML, requests) from `pyproject.toml`:
 
-To build and preview this Jekyll site locally, follow these steps:
-
-### Prerequisites
-
-- Ruby (version 2.7 or higher)
-- RubyGems
-- GCC and Make
-
-### Installation Steps
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/ipa-lab/ipa-lab.github.io.git
-   cd ipa-lab.github.io
-   ```
-
-2. Install the required gems:
-   ```bash
-   bundle install
-   ```
-
-3. Build and serve the site locally:
-   ```bash
-   bundle exec jekyll serve
-   ```
-
-4. Open your browser and navigate to:
-   ```
-   http://localhost:4000
-   ```
-
-The site will automatically rebuild when you make changes to the source files.
-
-### Alternative: Watch Mode
-
-For development, you can use the `--livereload` flag to automatically refresh the browser when changes are made:
 ```bash
-bundle exec jekyll serve --livereload
+uv sync
 ```
 
-## Python Scripts
+## Build
 
-This repository includes two Python scripts in the `_scripts/` directory for automating data fetching:
-
-### 1. `fetch_dblp.py`
-
-**Purpose:** Fetches publication data from DBLP (Digital Bibliography & Library Project).
-
-**Functionality:**
-- Retrieves publication information for specified researcher DBLP IDs
-- Fetches data from the DBLP XML API for each researcher
-- Extracts key information including title, year, venue, authors, and publication type
-- Sorts publications by year (newest first) and title
-- Generates a YAML file at `_data/publications/dblp_generated.yml`
-
-**Configuration:** Edit the `dblp_ids` list in the script to add or remove researchers.
-
-**Usage:**
 ```bash
-python _scripts/fetch_dblp.py
+uv run build.py
 ```
 
-### 2. `fetch_tiss.py`
+To refresh the team data from TISS before building:
 
-**Purpose:** Fetches team member information from the TU Wien TISS (TU Wien Information Systems and Services) API.
-
-**Functionality:**
-- Retrieves detailed information about team members using their TISS IDs
-- Fetches data including name, role, unit, email, phone, office location, and photo
-- Processes employee information such as function, organizational unit, and room details
-- Generates a YAML file at `_data/team/tiss_generated.yml`
-
-**Configuration:** Edit the `tiss_ids` list in the script to add or remove team members.
-
-**Usage:**
 ```bash
-python _scripts/fetch_tiss.py
+uv run build.py --fetch
 ```
 
-**Note:** Both scripts require internet connectivity and generate YAML files that are automatically used by the Jekyll site to display publications and team information.
+## Preview
 
-## Project Structure
-
-```
-.
-├── _config.yml         # Jekyll configuration
-├── _data/              # Data files (YAML) for team and publications
-├── _includes/          # Reusable HTML components
-├── _layouts/           # Page templates
-├── _pages/             # Individual pages (team, publications, etc.)
-├── _scripts/           # Python utility scripts
-├── css/                # Stylesheets
-├── Gemfile             # Ruby dependencies
-└── index.md            # Homepage content
+```bash
+python -m http.server -d _site
 ```
 
-## License
+Then open <http://localhost:8000>. Rebuild after editing a template or data file and reload the page.
 
-See the repository for license information.
+## Where the content lives
+
+| What | File |
+| --- | --- |
+| Page templates | `templates/*.html` (shared layout in `templates/base.html`) |
+| Recruiting status (theses, projects, open positions) | `_data/site.yml` |
+| "Questions we're working on" on the home page | `_data/questions.yml` |
+| Research themes and their linked papers | `_data/research.yml` |
+| Team members | `_data/team/tiss_generated.yml` (generated), with hand corrections in `_data/team/overrides.yml` |
+| Teaching | `_data/teaching.yml` |
+| Publications | `_data/publications/dblp_generated.yml` (generated) |
+| Styles, images, scripts | `static/` (copied to `_site/static/`) |
+
+## How the data is refreshed
+
+Two scripts in `_scripts/` regenerate the YAML files. Don't edit the generated files by hand; they are overwritten on every run.
+
+- **Publications are imported by hand.** DBLP blocks automated requests with a bot check, so there is no scraper. To refresh:
+  1. Open <https://dblp.org/pid/150/6416.html> in your browser and save the page (File › Save Page As…).
+  2. Run `uv run _scripts/import_dblp.py "path/to/saved page.html"`, then rebuild and commit `_data/publications/dblp_generated.yml`.
+
+  The importer de-duplicates entries by title (keeping the published version over a preprint) and sorts them newest first. It also accepts several files (for example one per lab member) and DBLP XML files.
+- `_scripts/fetch_tiss.py` fetches name, role, email, phone, office, and photo for the IDs in its `tiss_ids` list from the TU Wien TISS API and writes `_data/team/tiss_generated.yml`. To add or remove a team member, edit `tiss_ids`.
+
+`build.py` then cleans the publication data while rendering: it strips DBLP disambiguation numbers from author names (`Satish Chandra 0001`), strips trailing periods from titles, shows the venue `CoRR` as `arXiv`, and classifies each entry as Conference, Journal, Preprint, Artifact, or Thesis. Lab members (anyone in the TISS data) are highlighted in author lists.
+
+Team members are grouped by their TISS function group: professors as Faculty, student staff as Study assistants, and everyone else as Researchers. To add a person, add their TISS ID to `tiss_ids` in `_scripts/fetch_tiss.py`.
+
+## Deployment
+
+Every push to `master` runs `.github/workflows/pages.yml`, which sets up uv, refreshes the team data from TISS (`uv run build.py --fetch`), and deploys `_site/` to GitHub Pages. You can also start it by hand from the Actions tab.

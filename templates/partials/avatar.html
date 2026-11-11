@@ -1,0 +1,7 @@
+{# Round portrait from TISS over an initials monogram. The monogram shows when
+   there is no photo URL, or when the photo fails to load. #}
+{% macro avatar(person, cls="") -%}
+<span class="avatar {{ cls }}" role="img" aria-label="{{ person.name }}"><span aria-hidden="true">{{ person.initials }}</span>
+{%- if person.picture %}<img src="{{ person.picture }}" alt="" loading="lazy" width="160" height="160" onerror="this.remove()">{% endif -%}
+</span>
+{%- endmacro %}

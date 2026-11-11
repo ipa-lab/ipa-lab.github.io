@@ -6,7 +6,7 @@
   office: Favoritenstraße 9, 1040 Wien, AT
   phone: +43 1 58801 194307
   picture: https://tiss.tuwien.ac.at/illustration/anzeigen/5534f4ba5280.jpeg
-  role: Associate Prof.
+  role: University Professor
   room_code: HC0215
   unit: Research Unit of Software Engineering
 51750:
@@ -15,18 +15,18 @@
   name: Kristof Meixner
   office: Favoritenstraße 9, 1040 Wien, AT
   phone: +43 1 58801 194112
-  picture: https://tiss.tuwien.ac.at/illustration/anzeigen/a3e01b49f0f9.jpeg
+  picture: https://tiss.tuwien.ac.at/illustration/anzeigen/43be17db1d32.jpeg
   role: Senior Scientist
   room_code: HD0205
   unit: Research Unit of Software Engineering
 60223:
   email: michael.schroeder@tuwien.ac.at
-  function_group_tiss_id: 1004
+  function_group_tiss_id: 1013
   name: Michael Schröder
   office: Favoritenstraße 9, 1040 Wien, AT
   phone: +43 1 58801 194306
   picture: https://tiss.tuwien.ac.at/illustration/anzeigen/70a7e3e05399.jpeg
-  role: Project Assistant (FWF)
+  role: karenziert
   room_code: HB0218
   unit: Research Unit of Software Engineering
 306229:
@@ -53,19 +53,39 @@
   email: andreas.happe@tuwien.ac.at
   function_group_tiss_id: 1041
   name: Andreas Happe
-  office: ''
+  office: Favoritenstraße 9, 1040 Wien, AT
   phone: null
   picture: https://tiss.tuwien.ac.at/illustration/anzeigen/22acd3e371fd.png
   role: External employee
-  room_code: null
+  room_code: HB0214
   unit: Research Unit of Software Engineering
 309852:
   email: nathanael.nussbaumer@tuwien.ac.at
-  function_group_tiss_id: 1041
+  function_group_tiss_id: 1004
   name: Nathanael Nussbaumer
-  office: ''
+  office: Favoritenstraße 9, 1040 Wien, AT
   phone: null
   picture: https://tiss.tuwien.ac.at/illustration/anzeigen/9aafb420e122.jpeg
-  role: External employee
+  role: Assistant
+  room_code: HB0214
+  unit: Research Unit of Software Engineering
+361474:
+  email: martin.knoll@tuwien.ac.at
+  function_group_tiss_id: 1280
+  name: Martin Knoll
+  office: ''
+  phone: null
+  picture: ''
+  role: Student Staff in Research/Administration
   room_code: null
+  unit: Research Unit of Software Engineering
+377938:
+  email: jakob.jeschke@tuwien.ac.at
+  function_group_tiss_id: 1280
+  name: Jakob Jeschke
+  office: Favoritenstraße 9, 1040 Wien, AT
+  phone: null
+  picture: https://tiss.tuwien.ac.at/illustration/anzeigen/5f9ae5dffb79.jpeg
+  role: Student Staff in Research/Administration
+  room_code: HD0209
   unit: Research Unit of Software Engineering

@@ -1,9 +1,10 @@
 [project]
-name = "ipa-lab-scripts"
-version = "0.1.0"
-description = "Utility scripts for the IPA Lab site"
+name = "ipa-lab-site"
+version = "0.2.0"
+description = "Static site generator and data scripts for the IPA Lab website"
 requires-python = ">=3.9"
 dependencies = [
+  "jinja2==3.1.6",
   "pyyaml==6.0.3",
   "requests==2.32.5",
 ]

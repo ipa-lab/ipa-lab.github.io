@@ -1,0 +1,27 @@
+# Recruiting status. Edit this file to open or close positions and student
+# supervision; the Home, Team, and Join pages read from it.
+
+# Open positions (PhD, postdoc, ...). When `hiring` is false, the Join page
+# says there are no openings.
+hiring: false
+positions: []
+#  - title: PhD position in program repair
+#    url: https://example.org/job-ad
+#    description: One line about the position.
+# Shown on Home and Join while there are no open positions.
+not_hiring_note: We don't have any open positions at the moment either.
+
+# Student supervision at TU Wien. Set each to true when you accept students again.
+students:
+  bachelor_thesis: false
+  master_thesis: false
+  project: false         # Project in Computer Science
+  # Shown on Home and Join while thesis supervision is closed.
+  closed_note: >-
+    We're currently advising as many students as we can while still giving each
+    of them the time and attention they deserve, so we aren't taking on new
+    theses or projects right now.
+
+# Show the "join us" pointer at the end of the Team page. Turn this on when
+# you're recruiting again (students or positions).
+team_join_link: false

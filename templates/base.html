@@ -1,0 +1,54 @@
+{% set nav = [
+  ("research", "/research/", "research"),
+  ("team", "/team/", "team"),
+  ("publications", "/publications/", "publications"),
+  ("join", "/join/", "join"),
+] %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% endblock %}</title>
+  <meta name="description" content="{% block description %}Interactive Programming & Analysis Lab (IPA Lab) at the Research Unit of Software Engineering, TU Wien.{% endblock %}">
+  <meta name="theme-color" content="#FAFAF7">
+  <link rel="icon" href="/static/TU_Signet_RGB.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400..800&display=swap">
+  <link rel="stylesheet" href="/static/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/"{% if page == "index" %} aria-current="page"{% endif %}>
+        <img src="/static/TU_Signet_RGB.svg" alt="" width="28" height="28">
+        <strong>IPA Lab</strong>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+        {% for key, href, label in nav %}
+          <li><a href="{{ href }}"{% if page == key %} aria-current="page"{% endif %}>{{ label }}</a></li>
+        {% endfor %}
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+{% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p><strong>Interactive Programming &amp; Analysis Lab</strong>
+        Part of the <a href="https://informatics.tuwien.ac.at/orgs/e194-01">Research Unit of Software Engineering (E194-01)</a>, <a href="https://www.tuwien.at/">TU Wien</a>.</p>
+      <p><strong>Visit</strong>Favoritenstraße 9–11<br>1040 Vienna, Austria</p>
+      <p><strong>Contact</strong><a href="mailto:juergen.cito@tuwien.ac.at">juergen.cito@tuwien.ac.at</a><br>
+        <a href="https://github.com/ipa-lab/ipa-lab.github.io">Site source on GitHub</a> · © {{ year }}</p>
+    </div>
+  </footer>
+{% block scripts %}{% endblock %}
+</body>
+</html>

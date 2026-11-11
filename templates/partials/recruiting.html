@@ -1,0 +1,5 @@
+{# Short recruiting status sentence, driven by _data/site.yml. #}
+{% macro status_sentence() -%}
+{% if not (site.students.bachelor_thesis or site.students.master_thesis) %}{{ site.students.closed_note }}{% else %}We supervise {% if site.students.bachelor_thesis and site.students.master_thesis %}bachelor's and master's theses{% elif site.students.bachelor_thesis %}bachelor's theses{% else %}master's theses{% endif %} for TU Wien students.{% endif %}
+{% if site.hiring and site.positions %} We have {{ site.positions | length }} open position{{ "s" if site.positions | length != 1 }}.{% else %} {{ site.not_hiring_note }}{% endif %}
+{%- endmacro %}

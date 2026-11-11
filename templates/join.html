@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% from "partials/recruiting.html" import status_sentence with context %}
+{% block title %}Join us · IPA Lab{% endblock %}
+{% block description %}Theses, projects, and positions at the Interactive Programming & Analysis Lab, TU Wien.{% endblock %}
+{# Everything that can open or close lives in _data/site.yml. #}
+{% set s = site.students %}
+{% set rows = [
+  ("bachelor's thesis", s.bachelor_thesis),
+  ("master's thesis", s.master_thesis),
+  ("project in computer science", s.project),
+  ("positions", site.hiring and site.positions),
+] %}
+{% block content %}
+<section class="intro">
+  <p class="meta">join</p>
+  <h1 class="page-title">Join us</h1>
+  <p class="lede">We work with TU Wien students on theses (bachelor's and master's) and projects (Project in Computer Science) in the broader areas of software engineering.</p>
+</section>
+
+<section class="block" aria-labelledby="status">
+  <h2 class="label" id="status">status</h2>
+  <div>
+    <p class="notice">{{ status_sentence() }}</p>
+    <dl class="status">
+    {% for label, open in rows %}
+      <dt>{{ label }}</dt><dd class="{{ 'open' if open else 'closed' }}">{{ "open" if open else "closed" }}</dd>
+    {% endfor %}
+    </dl>
+  </div>
+</section>
+
+{% if s.bachelor_thesis or s.master_thesis or s.project %}
+<section class="block" aria-labelledby="start">
+  <h2 class="label" id="start">getting started</h2>
+  <ol class="numbered">
+    <li><span class="n">01</span><div><strong>Read the guidelines.</strong> Start with our <a href="https://bit.ly/ipa-thesis">IPA Thesis Guidelines</a>.</div></li>
+    <li><span class="n">02</span><div><strong>Browse the research.</strong> Look through our <a href="/research/">research themes</a> and <a href="/publications/">publications</a> to find what interests you.</div></li>
+    <li><span class="n">03</span><div><strong>Get in touch.</strong> If you are interested in working with us, email <a href="mailto:juergen.cito@tuwien.ac.at">Jürgen Cito</a>.</div></li>
+  </ol>
+</section>
+{% endif %}
+
+{% if site.hiring and site.positions %}
+<section class="block" aria-labelledby="positions">
+  <h2 class="label" id="positions">open positions</h2>
+  <ul class="papers">
+  {% for job in site.positions %}
+    <li><a class="title" href="{{ job.url }}">{{ job.title }}</a>{% if job.description %}<p class="authors">{{ job.description }}</p>{% endif %}</li>
+  {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+<section class="block" aria-labelledby="contact">
+  <h2 class="label" id="contact">contact</h2>
+  <dl class="status">
+    <dt>Jürgen Cito</dt><dd><a href="mailto:juergen.cito@tuwien.ac.at">juergen.cito@tuwien.ac.at</a></dd>
+  </dl>
+</section>
+{% endblock %}

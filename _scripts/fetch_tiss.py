@@ -12,6 +12,8 @@ tiss_ids = [
     340744, # Jakob Hoffmann
     48622, # Andreas Happe
     309852, # Nathanael Nussbaumer
+    361474, # Martin Knoll (study assistant)
+    377938, # Jakob Jeschke (study assistant)
     # add more TISS IDs here
 ]
 

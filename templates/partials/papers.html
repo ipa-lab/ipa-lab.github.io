@@ -1,0 +1,18 @@
+{# A text list of papers: title, mono venue line, optional authors. #}
+{% macro paper_list(items, authors=false) %}
+<ul class="papers">
+{% for pub in items %}
+  <li>
+    <a class="title" href="{{ pub.url }}">{{ pub.title }}</a>
+    {% if authors %}
+    <p class="authors">
+    {%- for a in pub.authors -%}
+      {% if a.member %}<span class="member">{{ a.name }}</span>{% else %}{{ a.name }}{% endif %}{% if not loop.last %}, {% endif %}
+    {%- endfor -%}
+    </p>
+    {% endif %}
+    <p class="meta">{{ pub.year }} · {% if pub.venue %}{{ pub.venue }} {% endif %}<span class="kind">{{ pub.kind | lower }}</span></p>
+  </li>
+{% endfor %}
+</ul>
+{% endmacro %}

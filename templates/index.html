@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% from "partials/avatar.html" import avatar %}
+{% from "partials/papers.html" import paper_list %}
+{% from "partials/recruiting.html" import status_sentence with context %}
+{% block title %}IPA Lab · Interactive Programming & Analysis Lab, TU Wien{% endblock %}
+{% block content %}
+{% set lead = team | selectattr("section", "equalto", "faculty") | first %}
+<section class="intro intro-home">
+  <div>
+    <p class="meta">Research Unit of Software Engineering · <span class="nowrap">TU Wien</span></p>
+    <h1>Interactive Programming<br> <span class="amp">&amp;</span> Analysis Lab</h1>
+    <p class="lede">We see the elements of play and exploration in activities of software and data engineering as an essential part of developing larger computational systems.</p>
+  </div>
+  <aside class="lead" aria-label="Lab lead">
+    <a class="lead-photo" href="/team/#person-{{ lead.id }}" tabindex="-1" aria-hidden="true"><img src="{{ lead.picture }}" alt="" width="240" height="240"></a>
+    <div>
+      <p class="meta">led by</p>
+      <p class="lead-name"><a href="/team/#person-{{ lead.id }}">{{ lead.name }}</a></p>
+      <p class="meta">{{ lead.role }}, <span class="nowrap">TU Wien</span></p>
+      <p class="meta"><a href="mailto:{{ lead.email }}">{{ lead.email }}</a></p>
+    </div>
+  </aside>
+</section>
+
+{# Questions from _data/questions.yml. static/questions.js cycles through them
+   one at a time; without JS (or with reduced motion) they show as a list. #}
+<section class="questions" id="questions" aria-labelledby="questions-title">
+  <h2 class="questions-lead" id="questions-title">Right now, we're wondering&hellip;</h2>
+  <ol class="question-list">
+  {% for q in questions %}
+    <li>
+      <p class="question">{{ q.question }}</p>
+      <ul class="q-papers">
+      {% for pub in q.papers %}
+        <li><a href="{{ pub.url }}">{{ pub.title }}</a> <span class="meta">{{ pub.venue }} {{ pub.year }}</span></li>
+      {% endfor %}
+      </ul>
+    </li>
+  {% endfor %}
+  </ol>
+  <div class="question-controls" hidden>
+    <button type="button" data-q="prev" aria-label="Previous question">←</button>
+    <span class="question-count" data-q="count" aria-hidden="true">1 / {{ questions | length }}</span>
+    <button type="button" data-q="next" aria-label="Next question">→</button>
+    <button type="button" data-q="pause" aria-label="Pause">pause</button>
+  </div>
+</section>
+
+<section class="block" aria-labelledby="approach">
+  <h2 class="label" id="approach">approach</h2>
+  <ol class="numbered">
+    <li><span class="n">01</span><div><strong>Empirical Understanding.</strong> We want to understand the underlying structures and artifacts that govern exploration and experimentation in computational tasks.</div></li>
+    <li><span class="n">02</span><div><strong>System Building.</strong> We design, build, and evaluate interventions in the form of systems that either automate or augment human ability to better deal with these structures and artifacts.</div></li>
+  </ol>
+</section>
+
+<section class="block" aria-labelledby="themes">
+  <h2 class="label" id="themes">themes</h2>
+  <div>
+    <ol class="numbered links">
+    {% for theme in themes %}
+      <li><span class="n">{{ "%02d" % loop.index }}</span><a href="/research/#{{ theme.slug }}">{{ theme.title }}</a></li>
+    {% endfor %}
+    </ol>
+  </div>
+</section>
+
+<section class="block" aria-labelledby="teaching">
+  <h2 class="label" id="teaching">teaching</h2>
+  <div>
+    <ul class="papers">
+    {% for c in teaching %}
+      <li>
+        <a class="title" href="{{ c.url }}">{{ c.title }}</a>
+        <p class="authors">{{ c.description }}</p>
+        <p class="meta">{{ c.number }} · {{ c.level }} · {{ c.ects }} ECTS</p>
+      </li>
+    {% endfor %}
+    </ul>
+    <p class="more"><a href="https://projects.se.tuwien.ac.at/">projects.se.tuwien.ac.at ↗</a></p>
+  </div>
+</section>
+
+<section class="block" aria-labelledby="latest">
+  <h2 class="label" id="latest">latest papers</h2>
+  <div>
+    {{ paper_list(pubs[:4]) }}
+    <p class="more"><a href="/publications/">all {{ pubs | length }} publications →</a></p>
+  </div>
+</section>
+
+<section class="block" aria-labelledby="people">
+  <h2 class="label" id="people">people</h2>
+  <div>
+    <p>{% for p in team %}<a href="/team/#person-{{ p.id }}">{{ p.name }}</a>{{ ", " if not loop.last }}{% endfor %}.</p>
+    <ul class="faces">
+    {% for p in team %}
+      <li><a href="/team/#person-{{ p.id }}" tabindex="-1" aria-hidden="true">{{ avatar(p) }}</a></li>
+    {% endfor %}
+    </ul>
+  </div>
+</section>
+
+{# Recognition is hidden until the full list of awards is gathered; restore by
+   removing this comment wrapper.
+<section class="block" aria-labelledby="recognition">
+  <h2 class="label" id="recognition">recognition</h2>
+  <ol class="numbered">
+    <li><span class="n">01</span><div><a href="https://research.fb.com/announcing-the-winners-of-the-facebook-continuous-reasoning-research-awards/"><strong>Facebook Research Award</strong></a><p>for our research on continuous and incremental performance modeling.</p></div></li>
+    <li><span class="n">02</span><div><strong>IBM Research Award</strong><p>for our research on synthesizing security patches using machine learning.</p></div></li>
+  </ol>
+</section>
+#}
+
+<section class="block" aria-labelledby="students">
+  <h2 class="label" id="students">students</h2>
+  <div>
+    <p>{{ status_sentence() }}</p>
+    <p class="more"><a href="/join/">details →</a> · <a href="https://bit.ly/ipa-thesis">thesis guidelines ↗</a></p>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="/static/questions.js" defer></script>
+{% endblock %}

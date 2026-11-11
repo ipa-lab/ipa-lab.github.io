@@ -1,0 +1,17 @@
+# Hand-maintained corrections applied on top of tiss_generated.yml at build
+# time (that file is overwritten by every fetch). Keyed by TISS ID; any field
+# set here replaces the TISS value.
+
+68412:  # Jürgen Cito: newer photo than the one in TISS
+  picture: /static/people/juergen-cito.jpg
+
+60223:  # Michael Schröder: show his previous role.
+  role: Project Assistant (FWF)
+
+361474:  # Martin Knoll
+  role: Study assistant
+377938:  # Jakob Jeschke
+  role: Study assistant
+
+48622:  # Andreas Happe: TISS says "External employee"; listed with the researchers.
+  role: Researcher

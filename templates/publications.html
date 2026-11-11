@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Publications · IPA Lab{% endblock %}
+{% block description %}Publications of the Interactive Programming & Analysis Lab at TU Wien.{% endblock %}
+{% block content %}
+<section class="intro">
+  <p class="meta">publications</p>
+  <h1 class="page-title">Publications</h1>
+  <p class="lede">{{ pubs | length }} papers, preprints, and artifacts, from <a href="https://dblp.org/pid/150/6416.html">DBLP</a>. Lab members are highlighted.</p>
+</section>
+
+{# Filter controls are hidden until publications.js runs; without JS the full list shows. #}
+<section class="block" id="pub-filters" aria-label="Filter publications" hidden>
+  <p class="label">filter</p>
+  <div class="filter">
+    <label><span aria-hidden="true">&gt;&gt;&gt;</span><span class="visually-hidden">Search publications</span>
+      <input id="pub-search" type="search" placeholder="search title, author, venue, year" autocomplete="off" spellcheck="false">
+    </label>
+    <div class="types" role="group" aria-label="Filter by type">
+      <button type="button" data-filter="all" aria-pressed="true">all {{ pubs | length }}</button>
+      {% for kind, count in type_counts if count %}
+      <button type="button" data-filter="{{ kind }}" aria-pressed="false">{{ kind | lower }} {{ count }}</button>
+      {% endfor %}
+    </div>
+    <p class="count" id="pub-count" aria-live="polite">{{ pubs | length }} publications</p>
+  </div>
+</section>
+
+{% for year, items in pubs_by_year %}
+<section class="block" data-year-group aria-labelledby="y{{ year }}">
+  <h2 class="label year" id="y{{ year }}">{{ year }}</h2>
+  <ul class="papers">
+  {% for pub in items %}
+    <li class="pub" data-type="{{ pub.kind }}" data-search="{{ [pub.title, pub.authors | map(attribute='name') | join(' '), pub.venue, pub.year, pub.kind] | join(' ') | lower }}">
+      <a class="title" href="{{ pub.url }}">{{ pub.title }}</a>
+      <p class="authors">
+      {%- for a in pub.authors -%}
+        {% if a.member %}<span class="member">{{ a.name }}</span>{% else %}{{ a.name }}{% endif %}{% if not loop.last %}, {% endif %}
+      {%- endfor -%}
+      </p>
+      <p class="meta">{% if pub.venue %}{{ pub.venue }} {% endif %}<span class="kind">{{ pub.kind | lower }}</span></p>
+    </li>
+  {% endfor %}
+  </ul>
+</section>
+{% endfor %}
+<p class="empty" id="pub-empty" hidden>&gt;&gt;&gt; [] &nbsp;# nothing matches. Try another term or type.</p>
+{% endblock %}
+{% block scripts %}
+<script src="/static/publications.js" defer></script>
+{% endblock %}

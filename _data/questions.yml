@@ -1,0 +1,40 @@
+# "Right now, we're wondering…": the questions that cycle on the home page.
+#
+# DRAFT COPY: the questions below are first drafts written from the lab's
+# recent papers and still need review. Keep each one short and precise.
+#
+# `paper_matches` are case-insensitive title fragments, looked up in
+# _data/publications/dblp_generated.yml at build time (as in research.yml).
+questions:
+  - question: Can LLM agents autonomously compromise enterprise networks, and how should such capabilities be governed?
+    paper_matches:
+      - Can LLMs Hack Enterprise Networks? Autonomous Assumed Breach
+      - "LLMs as Hackers: Autonomous Linux Privilege Escalation Attacks"
+      - The Ethics of Autonomous AI Agents for Offensive Security
+
+  - question: How effective are AI agents at repairing bugs in large industrial codebases?
+    paper_matches:
+      - Evaluating Agent-Based Program Repair at Google
+      - Agentic Bug Reproduction for Effective Automated Program Repair
+      - Adversarial Bug Reports as a Security Risk
+
+  - question: Which strategies do LLM agents follow when solving tasks, and how can we make them visible?
+    paper_matches:
+      - "ATLAS: Discovering Agent Strategies"
+      - Reducing Token Usage of State-in-Context Agents
+
+  - question: How can developers analyze and debug probabilistic programs?
+    paper_matches:
+      - Online and Interactive Bayesian Inference Debugging
+      - Static Factorisation of Probabilistic Programs
+      - Language-Agnostic Static Analysis of Probabilistic Programs
+
+  - question: Can we recover the grammars implicit in hand-written parsers?
+    paper_matches:
+      - Static Inference of Regular Grammars for Ad Hoc Parsers
+      - An Exploratory Study of Ad Hoc Parsers in Python
+      - Grammars for Free
+
+  - question: What role should software models play in AI-driven software engineering?
+    paper_matches:
+      - Lost in Code Generation

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% from "partials/avatar.html" import avatar %}
+{% block title %}Team · IPA Lab{% endblock %}
+{% block description %}Meet the people of the Interactive Programming & Analysis Lab at TU Wien.{% endblock %}
+{% block content %}
+<section class="intro">
+  <p class="meta">team</p>
+  <h1 class="page-title">The people</h1>
+</section>
+
+{% for key, heading in [("faculty", "faculty"), ("researchers", "researchers"), ("assistants", "study assistants")] %}
+{% set members = team | selectattr("section", "equalto", key) | list %}
+{% if members %}
+<section class="block" aria-labelledby="group-{{ key }}">
+  <h2 class="label" id="group-{{ key }}">{{ heading }}</h2>
+  <ul class="roster">
+  {% for p in members %}
+    <li id="person-{{ p.id }}">
+      {{ avatar(p) }}
+      <div>
+        <h3>{{ p.name }}</h3>
+        <p class="meta">{{ p.role }}</p>
+        <p class="contact">
+          {% if p.email %}<a href="mailto:{{ p.email }}">{{ p.email }}</a>{% endif %}
+          {% if p.room_code %}<a href="https://maps.tuwien.ac.at/?q={{ p.room_code }}" aria-label="Office {{ p.room_code }} on the TU Wien map">{{ p.room_code }}</a>{% endif %}
+          {% if p.phone %}<a href="tel:{{ p.phone | replace(' ', '') }}">{{ p.phone }}</a>{% endif %}
+        </p>
+      </div>
+    </li>
+  {% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% endfor %}
+
+{% if site.team_join_link %}{# switch in _data/site.yml #}
+<section class="block" aria-labelledby="join-us">
+  <h2 class="label" id="join-us">join us</h2>
+  <p>Interested in working with us? See <a href="/join/">what we offer right now</a>.</p>
+</section>
+{% endif %}
+{% endblock %}

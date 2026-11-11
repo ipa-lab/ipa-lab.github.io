@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% from "partials/papers.html" import paper_list %}
+{% block title %}Research · IPA Lab{% endblock %}
+{% block description %}Research themes of the Interactive Programming & Analysis Lab at TU Wien.{% endblock %}
+{% block content %}
+<section class="intro">
+  <p class="meta">research</p>
+  <h1 class="page-title">Play and exploration are how real systems get built.</h1>
+  <p class="lede">We see the elements of play and exploration in activities of software and data engineering as an essential part of developing larger computational systems. We look at them through two lenses.</p>
+</section>
+
+<section class="block" aria-labelledby="lenses">
+  <h2 class="label" id="lenses">two lenses</h2>
+  <ol class="numbered">
+    <li><span class="n">01</span><div><strong>Empirical Understanding.</strong> We want to understand the underlying structures and artifacts that govern exploration and experimentation in computational tasks.</div></li>
+    <li><span class="n">02</span><div><strong>System Building.</strong> We design, build, and evaluate interventions in the form of systems that either automate or augment human ability to better deal with these structures and artifacts.</div></li>
+  </ol>
+</section>
+
+{% for theme in themes %}
+<section class="block" id="{{ theme.slug }}" aria-labelledby="{{ theme.slug }}-title">
+  <p class="label">theme {{ "%02d" % loop.index }}</p>
+  <div>
+    <h2 id="{{ theme.slug }}-title">{{ theme.title }}</h2>
+    <p class="muted">{{ theme.description }}</p>
+    <div class="spaced">{{ paper_list(theme.papers) }}</div>
+  </div>
+</section>
+{% endfor %}
+{% endblock %}

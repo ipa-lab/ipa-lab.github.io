@@ -1,0 +1,16 @@
+# Courses shown on the home page and in the REPL (lab.teaching).
+# Details from https://projects.se.tuwien.ac.at/
+site: https://projects.se.tuwien.ac.at/
+courses:
+  - title: Software Engineering Project
+    number: "194.148"
+    level: Bachelor's
+    ects: 6
+    description: Teams build a web application in an agile process, using Spring Boot and Angular.
+    url: https://projects.se.tuwien.ac.at/sep/
+  - title: Advanced Software Engineering Project
+    number: "188.910"
+    level: Master's
+    ects: 6
+    description: Teams propose and build a larger software system, working with the architectures, automation, and tooling of advanced software systems.
+    url: https://projects.se.tuwien.ac.at/ase/

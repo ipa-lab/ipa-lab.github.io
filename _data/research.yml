@@ -1,0 +1,61 @@
+# Research themes shown on the Research page and as chips on the home page.
+#
+# DRAFT COPY: the `description` lines below are first drafts written during the
+# redesign and still need review.
+#
+# `paper_matches` are case-insensitive title fragments, looked up in
+# _data/publications/dblp_generated.yml at build time. The build prints a
+# warning if a fragment matches nothing.
+themes:
+  - slug: agents-repair
+    title: AI agents & program repair
+    description: How language-model agents find, reproduce, and fix bugs, and how far we can trust them.  # DRAFT
+    paper_matches:
+      - Evaluating Agent-Based Program Repair at Google
+      - Agentic Bug Reproduction for Effective Automated Program Repair
+      - Adversarial Bug Reports as a Security Risk
+      - Counterfactual Explanations for Models of Code
+
+  - slug: offensive-security
+    title: LLMs & offensive security
+    description: What language models can do in penetration testing, and how human hackers actually work.  # DRAFT
+    paper_matches:
+      - "Getting pwn'd by AI"
+      - "Understanding Hackers' Work"
+      - Can LLMs Hack Enterprise Networks
+      - On the Ethics of Using LLMs for Offensive Security
+
+  - slug: probabilistic-programming
+    title: Probabilistic programming
+    description: Static analysis and debugging tools that make probabilistic programs easier to understand.  # DRAFT
+    paper_matches:
+      - Language-Agnostic Static Analysis of Probabilistic Programs
+      - Online and Interactive Bayesian Inference Debugging
+      - Static Factorisation of Probabilistic Programs
+
+  - slug: performance-ide
+    title: Performance feedback in the IDE
+    description: Bringing runtime and production performance data to developers where they write code.  # DRAFT
+    paper_matches:
+      - Interactive production performance feedback in the IDE
+      - Monitoring-aware IDEs
+      - Predict Performance Regressions in Production at Meta
+      - Performance Prediction From Source Code
+
+  - slug: infrastructure-config
+    title: Infrastructure & configuration code
+    description: Analysing the code and configuration that build, deploy, and run software systems.  # DRAFT
+    paper_matches:
+      - Statically Inferring Usage Bounds for Infrastructure as Code
+      - Connecting the .dotfiles
+      - Learning CI Configuration Correctness
+      - An empirical investigation of command-line customization
+
+  - slug: data-science-parsing
+    title: Data science & parsing tools
+    description: Understanding the ad hoc code of data work and building tools that support it.  # DRAFT
+    paper_matches:
+      - An Exploratory Study of Ad Hoc Parsers in Python
+      - Grammars for Free
+      - Ballet Framework
+      - "AMS: generating AutoML search spaces"

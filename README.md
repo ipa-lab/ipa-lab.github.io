@@ -62,6 +62,15 @@ Two scripts in `_scripts/` regenerate the YAML files. Don't edit the generated f
 
 Team members are grouped by their TISS function group: professors as Faculty, student staff as Study assistants, and everyone else as Researchers. To add a person, add their TISS ID to `tiss_ids` in `_scripts/fetch_tiss.py`.
 
+## Privacy: no third-party requests
+
+The site makes visitors' browsers talk only to the site itself:
+- No cookies, analytics, or embeds.
+- Fonts are self-hosted in `static/fonts/` (SIL Open Font License).
+- Team photos from TISS are downloaded at build time and served from `/static/people/`, cached locally in `.cache/photos/`.
+
+`build.py` fails if any generated page, stylesheet, or script loads a resource (font, image, script, stylesheet) from another server. Plain links to other sites are fine. Please keep it that way: don't add Google Fonts, CDNs, YouTube embeds, or analytics.
+
 ## Deployment
 
 Every push to `master` runs `.github/workflows/pages.yml`, which sets up uv, refreshes the team data from TISS (`uv run build.py --fetch`), and deploys `_site/` to GitHub Pages. You can also start it by hand from the Actions tab.

@@ -8,6 +8,7 @@ Publications come from a saved DBLP page: see _scripts/import_dblp.py.
 """
 import argparse
 import datetime
+import hashlib
 import re
 import shutil
 import subprocess
@@ -15,12 +16,25 @@ import sys
 from collections import Counter
 from itertools import groupby
 from pathlib import Path
+from urllib.parse import urlparse
+
+import requests
 
 import yaml
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 ROOT = Path(__file__).parent
 DATA, TEMPLATES, STATIC, OUT = ROOT / "_data", ROOT / "templates", ROOT / "static", ROOT / "_site"
+PHOTO_CACHE = ROOT / ".cache" / "photos"  # downloaded TISS photos (git-ignored)
+
+# Privacy: the built site must not make visitors' browsers contact any other
+# server (no fonts, images, scripts, or styles from elsewhere). Plain links are fine.
+EXTERNAL_RESOURCE = re.compile(
+    r'(?:src|srcset|poster)\s*=\s*["\']\s*(?:https?:)?//'
+    r'|<link\b[^>]*\bhref\s*=\s*["\']\s*(?:https?:)?//'
+    r'|url\(\s*["\']?\s*(?:https?:)?//'
+    r'|@import\s+["\']?\s*(?:url\()?\s*["\']?\s*(?:https?:)?//',
+    re.IGNORECASE)
 
 # template -> output path (directory-style URLs work on GitHub Pages and http.server)
 PAGES = {
@@ -109,6 +123,49 @@ def attach_papers(items, pubs):
     return items
 
 
+def localize_photos(team):
+    """Download remote (TISS) photos so the site serves them itself.
+
+    Returns {filename: cached path}; each person's `picture` is rewritten to the
+    local URL, or cleared (initials fallback) if the download fails.
+    """
+    PHOTO_CACHE.mkdir(parents=True, exist_ok=True)
+    files = {}
+    for p in team:
+        url = p.get("picture") or ""
+        if not url.startswith(("http://", "https://")):
+            continue
+        ext = Path(urlparse(url).path).suffix.lower() or ".jpg"
+        name = f"{p['id']}-{hashlib.sha1(url.encode()).hexdigest()[:8]}{ext}"
+        cached = PHOTO_CACHE / name
+        if not cached.exists():
+            try:
+                resp = requests.get(url, timeout=15)
+                resp.raise_for_status()
+                if not resp.headers.get("content-type", "").startswith("image/"):
+                    raise ValueError(f"not an image ({resp.headers.get('content-type')})")
+                cached.write_bytes(resp.content)
+            except Exception as err:  # keep building; the template shows initials
+                print(f"warning: could not download photo for {p['name']}: {err}")
+                p["picture"] = ""
+                continue
+        p["picture"] = f"/static/people/{name}"
+        files[name] = cached
+    return files
+
+
+def check_no_external_resources():
+    """Fail the build if any generated page or stylesheet loads a resource from another server."""
+    problems = []
+    for path in OUT.rglob("*"):
+        if path.suffix in (".html", ".css", ".js") and path.is_file():
+            for m in EXTERNAL_RESOURCE.finditer(path.read_text(encoding="utf-8")):
+                problems.append(f"{path.relative_to(OUT)}: {m.group(0)}")
+    if problems:
+        sys.exit("error: external resources would leak visitor data to other servers:\n  "
+                 + "\n  ".join(problems))
+
+
 def fetch():
     """Refresh the team data from TISS, keeping the previous file if the fetch comes back empty."""
     for script, data in (("_scripts/fetch_tiss.py", "team/tiss_generated.yml"),):
@@ -122,6 +179,7 @@ def fetch():
 
 def build():
     team = load_team()
+    photos = localize_photos(team)
     pubs = load_publications(team)
     context = {
         "team": team,
@@ -140,6 +198,9 @@ def build():
     if OUT.exists():
         shutil.rmtree(OUT)
     shutil.copytree(STATIC, OUT / "static")
+    (OUT / "static" / "people").mkdir(parents=True, exist_ok=True)
+    for name, cached in photos.items():
+        shutil.copyfile(cached, OUT / "static" / "people" / name)
 
     for template, target in PAGES.items():
         path = OUT / target
@@ -151,6 +212,7 @@ def build():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(env.get_template("redirect.html").render(url=url), encoding="utf-8")
     (OUT / ".nojekyll").touch()
+    check_no_external_resources()
     print(f"built {len(PAGES)} pages, {len(pubs)} publications, {len(team)} people -> {OUT}")
 
 

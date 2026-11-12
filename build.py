@@ -43,6 +43,7 @@ PAGES = {
     "team.html": "team/index.html",
     "publications.html": "publications/index.html",
     "join.html": "join/index.html",
+    "privacy.html": "privacy/index.html",
     "404.html": "404.html",
 }
 REDIRECTS = {"vacancies/index.html": "/join/"}  # keep old Jekyll URLs alive

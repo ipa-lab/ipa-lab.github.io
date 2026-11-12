@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Privacy · IPA Lab{% endblock %}
+{% block description %}Data protection information for the website of the Interactive Programming & Analysis Lab, TU Wien.{% endblock %}
+{#
+  DRAFT, to be reviewed by TU Wien's data protection office (datenschutz@tuwien.ac.at).
+  Based on TU Wien's "Data protection information" for websites (REF 30100.03/003/2018,
+  https://www.tuwien.at/en/privacy-policy) and the "Handbuch Datenschutz auf Websites und in
+  Social Media Anwendungen an der TU Wien" (2020), which requires sites outside TU's central
+  CMS to publish their own privacy statement. Keep it in sync with what the site really does:
+  if you ever add analytics, embeds, forms or third-party resources, this page must change.
+#}
+{% block content %}
+<section class="intro">
+  <p class="meta">privacy</p>
+  <h1 class="page-title">Privacy</h1>
+  <p class="lede">This website is a plain, static site. It sets no cookies, uses no analytics or tracking, and loads nothing from other servers. This page explains the little personal data that is still involved.</p>
+</section>
+
+<section class="block" aria-labelledby="controller">
+  <h2 class="label" id="controller">controller</h2>
+  <div>
+    <p>This website belongs to the Interactive Programming &amp; Analysis Lab, part of the Research Unit of Software Engineering (E194-01) at TU Wien. The controller within the meaning of the General Data Protection Regulation (GDPR) is the Rectorate of TU Wien, Karlsplatz 13, 1040 Vienna, Austria.</p>
+    <p>For questions about this website, contact <a href="mailto:juergen.cito@tuwien.ac.at">Jürgen Cito</a>.</p>
+  </div>
+</section>
+
+<section class="block" aria-labelledby="dpo">
+  <h2 class="label" id="dpo">data protection officer</h2>
+  <div>
+    <p>TU Wien's data protection officer can be reached at <a href="mailto:datenschutz@tuwien.ac.at">datenschutz@tuwien.ac.at</a> (TU Wien, Karlsplatz 13/018, 1040 Vienna). Please send requests concerning your rights as a data subject to this address.</p>
+  </div>
+</section>
+
+<section class="block" aria-labelledby="hosting">
+  <h2 class="label" id="hosting">hosting &amp; log files</h2>
+  <div>
+    <p>The site is hosted on GitHub Pages, a service of GitHub, Inc. (88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA). When you visit a page, your browser sends technical data to GitHub's servers, as with any website: your IP address, the date and time, the requested page, and your browser's user agent. GitHub logs visitors' IP addresses for security purposes, whether or not they have a GitHub account. We have no access to these logs and do not receive any visitor statistics.</p>
+    <p>This processing is necessary to deliver the website and keep it secure. The legal basis is our legitimate interest in operating a secure website (Art. 6(1)(f) GDPR). GitHub may process this data in the USA. For details and retention periods, see the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub General Privacy Statement</a>.</p>
+  </div>
+</section>
+
+<section class="block" aria-labelledby="cookies">
+  <h2 class="label" id="cookies">no cookies or tracking</h2>
+  <div>
+    <p>We do not use cookies, local storage, analytics, tracking pixels, social media plugins, or embedded content from other providers. Fonts, photos and scripts are all served from this website itself. The small scripts on the site (cycling research questions and the publication filter) run only in your browser and send no data anywhere.</p>
+  </div>
+</section>
+
+<section class="block" aria-labelledby="people">
+  <h2 class="label" id="people">people on this site</h2>
+  <div>
+    <p>The <a href="/team/">Team</a> page lists the lab's members with their name, role, work email, office and phone number, and photo. This information comes from TU Wien's information system TISS, where staff decide themselves whether to provide a photo. Publication lists come from the public bibliography DBLP. Publishing staff names, photos and publication lists on the website of a research institution is permitted under § 2h(1)(1) of the Austrian Research Organisation Act (FOG). Lab members may object to the publication of their photo at any time.</p>
+  </div>
+</section>
+
+<section class="block" aria-labelledby="email">
+  <h2 class="label" id="email">contacting us</h2>
+  <div>
+    <p>If you email us, we receive your email address and your message like any other email, and use them to reply to you. The legal basis is our legitimate interest in answering your request (Art. 6(1)(f) GDPR), or Art. 6(1)(b) GDPR if your request concerns a contract, such as a thesis or a position.</p>
+  </div>
+</section>
+
+<section class="block" aria-labelledby="links">
+  <h2 class="label" id="links">links to other sites</h2>
+  <div>
+    <p>This site links to other websites, for example publishers, TISS, or GitHub. If you follow such a link, the other site's privacy policy applies; we have no influence on how it handles your data.</p>
+  </div>
+</section>
+
+<section class="block" aria-labelledby="rights">
+  <h2 class="label" id="rights">your rights</h2>
+  <div>
+    <p>Under the GDPR you have the right to access, rectification, erasure, restriction of processing, data portability, and to object to processing based on legitimate interests. To exercise these rights, contact <a href="mailto:datenschutz@tuwien.ac.at">datenschutz@tuwien.ac.at</a>.</p>
+    <p>You may also lodge a complaint with the Austrian Data Protection Authority (<a href="https://www.dsb.gv.at/">Datenschutzbehörde</a>, dsb@dsb.gv.at).</p>
+    <p>See also TU Wien's general <a href="https://www.tuwien.at/en/privacy-policy">data protection information</a> and <a href="https://www.tuwien.at/en/imprint">legal notice</a>.</p>
+  </div>
+</section>
+{% endblock %}
